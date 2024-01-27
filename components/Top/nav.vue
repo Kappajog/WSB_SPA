@@ -1,59 +1,41 @@
+<script setup>
+const obj = ref(null)
+const title = ref("")
+const props = defineProps({
+  itemsMenu: {
+    type: Array,
+    default: () => []
+    // required: true
+  }
+})
+async function logData() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+  obj.value = await response.json();
+  title.value = obj.value ? " - " + obj.value.title : "";
+  console.log(obj.value.title);
+}
+
+onMounted(() => {
+  console.log(props.itemsMenu);
+
+  logData();
+})
+</script>
+
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      </a>
+  <div class="navbar navbar-expand-lg bg-light navbar-light">
+    <div class="container-fluid">
+      <a href="index.html" class="navbar-brand">Burger <span>King{{ title }}</span></a>
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <NuxtLink to="/" class="navbar-item">Home</NuxtLink>
-        <NuxtLink to="/about" class="navbar-item">About (SPA)</NuxtLink>
-        <a href="/about" class="navbar-item">About (MPA)</a>
-
-
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-            </a>
-            <a class="navbar-item">
-              Jobs
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              Log in
-            </a>
-          </div>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav ml-auto">
+          <NuxtLink v-for="item of itemsMenu" :to="item.to" class="nav-item nav-link">{{ item.name }}</NuxtLink>
         </div>
       </div>
     </div>
-  </nav>
+  </div>
+  <!-- Nav Bar End -->
 </template>
